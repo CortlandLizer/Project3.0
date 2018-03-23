@@ -19,11 +19,16 @@
 
     <TextView
         android:id="@+id/tvRaw"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
         android:lines="20"
         android:text="TextView"
         android:textColor="@color/Red" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="300dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -33,12 +38,12 @@
 
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
         <TableRow
             android:id="@+id/tableRow1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -52,10 +57,12 @@
                 android:text="" />
         </TableRow>
 
+
+
         <TableRow
             android:id="@+id/tableRow2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -67,36 +74,43 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="" />
+
+
         </TableRow>
+
+        <TextView
+            android:id="@+id/imageURLText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="URL Text" />
 
         <TableRow
             android:id="@+id/tableRow3"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content">
 
             <Button
                 android:id="@+id/bleft"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:enabled="false"
-                android:text="&lt;&lt;" 
-                android:onClick="doLeft"/>
+                android:onClick="doLeft"
+                android:text="&lt;&lt;" />
 
             <Button
                 android:id="@+id/bright"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:enabled="false"
-                android:text=">>" 
-               android:onClick="doRight"/>
+                android:onClick="doRight"
+                android:text=">>" />
 
         </TableRow>
 
         <TableRow
             android:id="@+id/tableRow4"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        </TableRow>
-</TableLayout>
+            android:layout_height="wrap_content"></TableRow>
+    </TableLayout>
 
 </LinearLayout>
