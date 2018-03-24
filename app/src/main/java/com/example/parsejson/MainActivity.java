@@ -18,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -163,8 +165,14 @@ public class MainActivity extends AppCompatActivity {
             tvfirstname.setText(jsonObject.getString("name"));
             tvlastname.setText(jsonObject.getString("file"));
             imageURL.setText(PULLURL + jsonObject.getString("file"));
-            imageView.setImageBitmap(decodeFile(imageURL.toString()));
+            //imageView.setImageBitmap(decodeFile(imageURL.toString()));
+           // Picasso.with(this).load(imageURL.toString()).into(imageView);
 
+
+            // this does it
+            Picasso.with(this)
+                    .load("http://www.pcs.cnu.edu/~kperkins/pets/" + jsonObject.getString("file"))
+                    .into(imageView);
 
 
         } catch (JSONException e) {

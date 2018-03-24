@@ -2,30 +2,30 @@
 <instant-run
     abi="x86"
     api-level="26"
-    build-mode="COLD"
+    build-mode="HOT_WARM"
     density="560dpi"
     format="10"
     plugin-version="3.0.1"
-    timestamp="1521836228948"
+    timestamp="1521863877962"
     token="5360180577972151577"
-    verifier="COLD_SWAP_REQUESTED" >
+    verifier="COMPATIBLE" >
 
     <task
         name="javac"
-        duration="372" />
+        duration="564" />
     <task
         name="instant-run-dex"
-        duration="0" />
+        duration="408" />
     <task
         name="instant-run-transform"
-        duration="0" />
+        duration="45" />
     <task
         name="verifier"
-        duration="0" />
+        duration="3" />
 
     <artifact
-        location="C:\Users\cortl\AndroidStudioProjects\Project3\app\build\intermediates\split-apk\debug\slices\slice_2.apk"
-        type="SPLIT" />
+        location="C:\Users\cortl\AndroidStudioProjects\Project3\app\build\intermediates\reload-dex\debug\classes.dex"
+        type="RELOAD_DEX" />
 
     <build
         build-mode="FULL"
@@ -89,11 +89,37 @@
     </build>
     <build
         build-mode="COLD"
-        timestamp="1521836228948"
+        ir-eligibility="COMPATIBLE"
+        timestamp="1521863644773"
+        verifier="COLD_SWAP_REQUESTED" >
+        <artifact
+            location="C:\Users\cortl\AndroidStudioProjects\Project3\app\build\intermediates\split-apk\debug\dep\dependencies.apk"
+            type="SPLIT" />
+    </build>
+    <build
+        build-mode="COLD"
+        ir-eligibility="COMPATIBLE"
+        timestamp="1521863794865"
         verifier="COLD_SWAP_REQUESTED" >
         <artifact
             location="C:\Users\cortl\AndroidStudioProjects\Project3\app\build\intermediates\split-apk\debug\slices\slice_2.apk"
             type="SPLIT" />
+    </build>
+    <build
+        build-mode="HOT_WARM"
+        timestamp="1521863844378"
+        verifier="COMPATIBLE" >
+        <artifact
+            location="C:\Users\cortl\AndroidStudioProjects\Project3\app\build\intermediates\builds\debug\1521863844378\classes.dex"
+            type="RELOAD_DEX" />
+    </build>
+    <build
+        build-mode="HOT_WARM"
+        timestamp="1521863877962"
+        verifier="COMPATIBLE" >
+        <artifact
+            location="C:\Users\cortl\AndroidStudioProjects\Project3\app\build\intermediates\reload-dex\debug\classes.dex"
+            type="RELOAD_DEX" />
     </build>
 
 </instant-run>
