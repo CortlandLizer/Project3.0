@@ -109,13 +109,18 @@ public class MainActivity extends AppCompatActivity {
 
             myTask.execute(MYURL);
         } else {
-            // addded to display image of no network.
-            errorText.setText("An error has ocurred");
-            imageView.setImageResource(R.drawable.dino);
+            setErrors();
         }
 
 
 
+
+    }
+    public void setErrors(){
+
+        // added to display image of no network.
+        errorText.setText("An error has ocurred");
+        imageView.setImageResource(R.drawable.dino);
 
     }
 
