@@ -23,6 +23,7 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -47,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvfirstname;
     private TextView tvlastname;
     private ImageView imageView;
+    private TextView errorText;
+
 
     private Bitmap urlImage;
 
@@ -82,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         tvlastname = (TextView) findViewById(R.id.tvlastname);
         bleft = (Button) findViewById(R.id.bleft);
         bright = (Button) findViewById(R.id.bright);
+        errorText = (TextView) findViewById(R.id.errorText);
 
 
         toolbar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -105,8 +109,9 @@ public class MainActivity extends AppCompatActivity {
 
             myTask.execute(MYURL);
         } else {
-
-            // throw error
+            // addded to display image of no network.
+            errorText.setText("An error has ocurred");
+            imageView.setImageResource(R.drawable.dino);
         }
 
 
@@ -158,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
         // try to
         // get a value that does not exist
         try {
+
 
 
             JSONObject jsonObject = jsonArray.getJSONObject(i);
