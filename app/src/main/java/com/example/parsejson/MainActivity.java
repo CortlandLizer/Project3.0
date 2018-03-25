@@ -13,8 +13,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +36,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "ParseJSON";
@@ -60,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
     int numberentries = -1;
     int currententry = -1;
+    Spinner spinner;
 
 
 
@@ -87,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
         bright = (Button) findViewById(R.id.bright);
         errorText = (TextView) findViewById(R.id.errorText);
 
+        spinner = (Spinner) findViewById(R.id.pets_spinner);
 
         toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
@@ -108,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             myTask.execute(MYURL);
+
         } else {
             setErrors();
         }
@@ -137,9 +143,9 @@ public class MainActivity extends AppCompatActivity {
            // imageView.setImageResource(jsonobject.);
 
             // you must know what the data format is, a bit brittle
-            //jsonArray = jsonobject.getJSONArray("people");
-            jsonArray = jsonobject.getJSONArray("pets");
 
+            jsonArray = jsonobject.getJSONArray("pets");
+            fillList(jsonArray);
             // how many entries
             numberentries = jsonArray.length();
 
@@ -152,6 +158,24 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+    public void fillList(JSONArray array) throws JSONException {
+        String user = "";
+        int i = 0;
+        String[] holder = new String[jsonArray.length() + 1];
+        ArrayList<String> name = new ArrayList<String>();
+        while (array.length() < i){
+
+            user = array.getString(i);
+            Log.d("json array", user);
+            //holder[i] = user;
+            //user = "";
+            name.add(user);
+            i++;
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,name);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
     }
 
     /**
