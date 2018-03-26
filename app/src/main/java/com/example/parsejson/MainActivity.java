@@ -1,17 +1,22 @@
 package com.example.parsejson;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -37,6 +42,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "ParseJSON";
@@ -52,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvlastname;
     private ImageView imageView;
     private TextView errorText;
+    private TextView errorLink;
 
 
     private Bitmap urlImage;
@@ -64,11 +71,7 @@ public class MainActivity extends AppCompatActivity {
     int numberentries = -1;
     int currententry = -1;
     Spinner spinner;
-
-
-
-
-
+    int statusCode = 0;
 
 
     @Override
@@ -81,17 +84,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        tvRaw = (TextView) findViewById(R.id.tvRaw);
+        //tvRaw = (TextView) findViewById(R.id.tvRaw);
         imageView = (ImageView) findViewById(R.id.imageView);
-        imageURL  = (TextView) findViewById(R.id.imageURLText);
+        //imageURL  = (TextView) findViewById(R.id.imageURLText);
 
-        tvfirstname = (TextView) findViewById(R.id.tvfirstname);
-        tvlastname = (TextView) findViewById(R.id.tvlastname);
-        bleft = (Button) findViewById(R.id.bleft);
-        bright = (Button) findViewById(R.id.bright);
+        //tvfirstname = (TextView) findViewById(R.id.tvfirstname);
+        //tvlastname = (TextView) findViewById(R.id.tvlastname);
+        //bleft = (Button) findViewById(R.id.bleft);
+        //bright = (Button) findViewById(R.id.bright);
         errorText = (TextView) findViewById(R.id.errorText);
+        errorLink = (TextView) findViewById(R.id.errorLink);
 
-        spinner = (Spinner) findViewById(R.id.pets_spinner);
 
         toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
@@ -111,25 +114,30 @@ public class MainActivity extends AppCompatActivity {
             myTask.setnameValuePair("name", "file");
 
 
-
             myTask.execute(MYURL);
+            // test();
 
         } else {
             setErrors();
         }
 
 
-
-
     }
-    public void setErrors(){
 
-        // added to display image of no network.
-        errorText.setText("An error has ocurred");
+    public void setErrors() {
+
+
+        errorLink.setText(PULLURL);
+        errorText.setText("404!");
         imageView.setImageResource(R.drawable.dino);
 
     }
 
+    public void processBitmap(Bitmap map) {
+
+        imageView.setImageBitmap(map);
+
+    }
 
 
     public void processJSON(String string) {
@@ -139,13 +147,41 @@ public class MainActivity extends AppCompatActivity {
             //*********************************
             //makes JSON indented, easier to read
             Log.d(TAG, jsonobject.toString(SPACES_TO_INDENT_FOR_EACH_LEVEL_OF_NESTING));
-            tvRaw.setText(jsonobject.toString(SPACES_TO_INDENT_FOR_EACH_LEVEL_OF_NESTING));
-           // imageView.setImageResource(jsonobject.);
+            //tvRaw.setText(jsonobject.toString(SPACES_TO_INDENT_FOR_EACH_LEVEL_OF_NESTING));
+            // imageView.setImageResource(jsonobject.);
 
             // you must know what the data format is, a bit brittle
 
             jsonArray = jsonobject.getJSONArray("pets");
-            fillList(jsonArray);
+
+
+            String user = "";
+            int i = 0;
+
+            ArrayList<String> name = new ArrayList<String>();
+            ArrayList<Pet> array = new ArrayList<Pet>();
+            while (jsonArray.length() > i) {
+
+                try {
+                    Pet pet = new Pet(jsonArray.getJSONObject(i).getString("name"), jsonArray.getJSONObject(i).getString("file"));
+                    array.add(pet);
+                    Log.d(TAG, "Pet data:" + pet.getName());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Log.d("json array", user);
+                //holder[i] = user;
+                //user = "";
+                name.add(user);
+                i++;
+            }
+            //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, name);
+
+            //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            MyAdapter adapter = new MyAdapter(this,R.layout.custom_spinner_item, array);
+            spinner.setAdapter(adapter);
+
+
             // how many entries
             numberentries = jsonArray.length();
 
@@ -159,24 +195,32 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-    public void fillList(JSONArray array) throws JSONException {
-        String user = "";
-        int i = 0;
-        String[] holder = new String[jsonArray.length() + 1];
-        ArrayList<String> name = new ArrayList<String>();
-        while (array.length() < i){
-
-            user = array.getString(i);
-            Log.d("json array", user);
-            //holder[i] = user;
-            //user = "";
-            name.add(user);
-            i++;
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,name);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-    }
+//    public void fillList(JSONArray array) throws JSONException {
+//        String user = "";
+//        int i = 0;
+//
+//        ArrayList<String> name = new ArrayList<String>();
+//        while (array.length() >i){
+//
+//            user = array.getString(i);
+//            Log.d("json array", user);
+//            //holder[i] = user;
+//            //user = "";
+//            name.add(user);
+//            i++;
+//        }
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,name);
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinner.setAdapter(adapter);
+//    }
+//    public void test(){
+//
+//        String use = "http://www.pcs.cnu.edu/~kperkins/pets/p0.png";
+//        DownloadTask_Image temp = new DownloadTask_Image(this);
+//        Log.d(TAG, "test called");
+//        temp.execute(use);
+//
+//    }
 
     /**
      * @param i find the object i in the member var jsonArray get the
@@ -194,54 +238,63 @@ public class MainActivity extends AppCompatActivity {
         try {
 
 
-
             JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-            tvfirstname.setText(jsonObject.getString("name"));
-            tvlastname.setText(jsonObject.getString("file"));
-            imageURL.setText(PULLURL + jsonObject.getString("file"));
+            //tvfirstname.setText(jsonObject.getString("name"));
+            //tvlastname.setText(jsonObject.getString("file"));
+            //imageURL.setText(PULLURL + jsonObject.getString("file"));
             //imageView.setImageBitmap(decodeFile(imageURL.toString()));
-           // Picasso.with(this).load(imageURL.toString()).into(imageView);
-
+            // Picasso.with(this).load(imageURL.toString()).into(imageView);
+            int index = 0;
+            //while (jsonArray.length() > index){
+            String use = "http://www.pcs.cnu.edu/~kperkins/pets/" + jsonObject.getString("file");
+            DownloadTask_Image temp = new DownloadTask_Image(this);
+            temp.execute(use);
+            //}
 
             // this does it
-            Picasso.with(this)
-                    .load("http://www.pcs.cnu.edu/~kperkins/pets/" + jsonObject.getString("file"))
-                    .into(imageView);
+            //Picasso.with(this)
+            //      .load("http://www.pcs.cnu.edu/~kperkins/pets/" + jsonObject.getString("file"))
+            //    .into(imageView);
 
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        setButtons();
+        //setButtons();
     }
 
-    private void setButtons() {
-        // make sure that appropriate buttons enabled only
-        bleft.setEnabled(numberentries != -1 && currententry != 0);
-        bright.setEnabled(numberentries != -1
-                && currententry != numberentries - 1);
-    }
-
-    public void doLeft(View v) {
-        if (numberentries != -1 && currententry != 0) {
-            currententry--;
-            setJSONUI(currententry);
-        }
-    }
-
-    public void doRight(View v) {
-        if (numberentries != -1 && currententry != numberentries) {
-            currententry++;
-            setJSONUI(currententry);
-        }
-    }
+//    private void setButtons() {
+//        // make sure that appropriate buttons enabled only
+//        bleft.setEnabled(numberentries != -1 && currententry != 0);
+//        bright.setEnabled(numberentries != -1
+//                && currententry != numberentries - 1);
+//    }
+//
+//    public void doLeft(View v) {
+//        if (numberentries != -1 && currententry != 0) {
+//            currententry--;
+//            setJSONUI(currententry);
+//        }
+//    }
+//
+//    public void doRight(View v) {
+//        if (numberentries != -1 && currententry != numberentries) {
+//            currententry++;
+//            setJSONUI(currententry);
+//        }
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
+
+        MenuItem item = menu.findItem(R.id.spinner);
+        spinner = (Spinner) item.getActionView();
+
+
         return true;
     }
 
@@ -256,10 +309,13 @@ public class MainActivity extends AppCompatActivity {
 
                 break;
 
-            case R.id.pets_spinner:
-
-
-                break;
+            case R.id.spinner:
+                String user = spinner.getSelectedItem().toString();
+                Picasso.with(this)
+                        .load("http://www.pcs.cnu.edu/~kperkins/pets/" + user + ".png")
+                        .into(imageView);
+                String path = "http://www.pcs.cnu.edu/~kperkins/pets/" + user + ".png";
+                Log.v(TAG, path);
 
 
             default:
@@ -288,31 +344,65 @@ public class MainActivity extends AppCompatActivity {
         tvRaw.setMovementMethod(new ScrollingMovementMethod());
     }
 
-// https://acadgild.com/blog/load-image-url-imageview-android/
-    private Bitmap decodeFile(String f){
+    // https://acadgild.com/blog/load-image-url-imageview-android/
+    private Bitmap decodeFile(String f) {
         try {
 //decode image size
             BitmapFactory.Options o = new BitmapFactory.Options();
             o.inJustDecodeBounds = true;
-            BitmapFactory.decodeStream(new FileInputStream(f),null,o);
+            BitmapFactory.decodeStream(new FileInputStream(f), null, o);
 
 //Find the correct scale value. It should be the power of 2.
-            final int REQUIRED_SIZE=70;
-            int width_tmp=o.outWidth, height_tmp=o.outHeight;
-            int scale=1;
-            while(true){
-                if(width_tmp/2<REQUIRED_SIZE || height_tmp/2<REQUIRED_SIZE)
+            final int REQUIRED_SIZE = 70;
+            int width_tmp = o.outWidth, height_tmp = o.outHeight;
+            int scale = 1;
+            while (true) {
+                if (width_tmp / 2 < REQUIRED_SIZE || height_tmp / 2 < REQUIRED_SIZE)
                     break;
-                width_tmp/=2;
-                height_tmp/=2;
-                scale*=2;
+                width_tmp /= 2;
+                height_tmp /= 2;
+                scale *= 2;
             }
 //decode with inSampleSize
             BitmapFactory.Options o2 = new BitmapFactory.Options();
-            o2.inSampleSize=scale;
+            o2.inSampleSize = scale;
             return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
-        } catch (FileNotFoundException e) {}
+        } catch (FileNotFoundException e) {
+        }
         return null;
     }
 
+    class MyAdapter extends ArrayAdapter<Pet> {
+        private Context con;
+        private List<Pet> pet;
+        private int layout;
+
+        public MyAdapter(@NonNull Context context, int resource, @NonNull List<Pet> objects) {
+            super(context, resource, objects);
+            con = context;
+            pet = objects;
+            layout = resource;
+        }
+
+
+        @Override
+        public long getItemId(int position) {
+            return super.getItemId(position);
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            View view = convertView;
+            TextView tv = null;
+            if (view == null) {
+                view = getLayoutInflater().inflate(layout, null, true);
+                tv = (TextView) view.findViewById(R.id.item);
+            }
+            Pet temp = pet.get(position);
+            tv.setText(temp.getName());
+            return  view;
+        }
+
+    }
 }

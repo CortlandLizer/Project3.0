@@ -3,6 +3,7 @@
  */
 package com.example.parsejson;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -54,6 +55,13 @@ public abstract class DownloadTask extends AsyncTask<String, Void, String> {
 		}
 		return this;
 	}
+	public void setStatusCode(int stat){
+
+		statusCode = stat;
+	}
+	public int getStatusCode(){
+		return statusCode;
+	}
 
 	/**
 	 *
@@ -91,6 +99,8 @@ public abstract class DownloadTask extends AsyncTask<String, Void, String> {
 				// the 200 codes (there can be 100 of them
 				// http_status / 100 != 2 does integer div any 200 code will = 2
 				statusCode = connection.getResponseCode();
+
+				//setStatusCode(statusCode);
 				if (statusCode / 100 != 2) {
 					Log.e(TAG, "Error-connection.getResponseCode returned "
 							+ Integer.toString(statusCode));
@@ -106,6 +116,7 @@ public abstract class DownloadTask extends AsyncTask<String, Void, String> {
 				while ((myData = in.readLine()) != null) {
 					sb.append(myData);
 				}
+
 				return sb.toString();
 
 			} finally {

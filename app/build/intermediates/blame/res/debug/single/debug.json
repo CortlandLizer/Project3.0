@@ -708,6 +708,10 @@
         "source": "/home/matt/.gradle/caches/transforms-1/files-1.1/appcompat-v7-23.1.1.aar/eedfb438a72a7517a8f2867b68f62a24/res/drawable-mdpi/abc_list_pressed_holo_dark.9.png"
     },
     {
+        "merged": "/home/matt/Documents/Project3.0/app/build/intermediates/res/merged/debug/layout_custom_spinner_item.xml.flat",
+        "source": "/home/matt/Documents/Project3.0/app/src/main/res/layout/custom_spinner_item.xml"
+    },
+    {
         "merged": "/home/matt/Documents/Project3.0/app/build/intermediates/res/merged/debug/anim_abc_slide_out_top.xml.flat",
         "source": "/home/matt/.gradle/caches/transforms-1/files-1.1/appcompat-v7-23.1.1.aar/eedfb438a72a7517a8f2867b68f62a24/res/anim/abc_slide_out_top.xml"
     },

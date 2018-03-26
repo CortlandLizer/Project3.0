@@ -1,5 +1,7 @@
 package com.example.parsejson;
 
+import org.json.JSONException;
+
 /**
  * Created by keith on 3/6/18.
  */
@@ -16,6 +18,9 @@ public class DownloadTask_KP extends DownloadTask {
     protected void onPostExecute(String result) {
         if (myActivity != null) {
             myActivity.processJSON(result);
+        }
+        if(result == null){
+            myActivity.setErrors();
         }
     }
 
